@@ -5,51 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WiseToDo — 说出来，就对了。</title>
   <meta name="description" content="语音驱动的智能任务管理。一句话创建、修改、完成任务。">
-  <meta name="theme-color" content="#f4efe6">
+  <meta name="theme-color" content="#f5f0e6">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=LXGW+WenKai:wght@300;400;700&family=Noto+Serif+SC:wght@200;300;400;600;700&family=Inter:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=LXGW+WenKai:wght@300;400;700&family=Noto+Serif+SC:wght@200;300;400;600;700;900&family=Inter:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-    /* ─── Tokens: Light (宣纸) ─── */
+    /* ══════════ Design Tokens ══════════ */
+    /* Aligned with WiseToDo DesignTokens.swift (WTTokens) */
 
     :root {
-      --bg:        #f4efe6;
-      --bg-alt:    #ebe5d9;
-      --fg:        #1c1b18;
-      --fg-body:   #3a3632;
-      --fg-muted:  #7a746a;
-      --fg-dim:    #b0a898;
-      --accent:    #8c3130;
-      --accent-soft: rgba(140,49,48,0.08);
-      --rule:      #d4cdbf;
+      /* Surfaces — 宣纸 / Rice Paper */
+      --bg:          #f5f0e6;
+      --bg-elevated: #efeade;
+      --bg-recessed: #e8e2d4;
 
+      /* Text — 墨色阶梯 */
+      --fg:          #1a1814;
+      --fg-body:     #3d3830;
+      --fg-muted:    #7d756a;
+      --fg-dim:      #b0a898;
+      --fg-ghost:    #d0c9bc;
+
+      /* Accent — aiGold / WTTokens.accent */
+      --gold:        #c9a96e;
+      --gold-soft:   rgba(201,169,110,0.12);
+      --gold-text:   #a08545;
+
+      /* Semantic */
+      --rule:        #d8d1c4;
+      --rule-light:  #e8e2d6;
+
+      /* Typography families */
       --wenkai:  'LXGW WenKai', 'Kaiti SC', 'STKaiti', serif;
       --song:    'Noto Serif SC', 'Songti SC', 'STSong', serif;
-      --sans-zh: 'Noto Sans SC', 'PingFang SC', sans-serif;
+      --sans-zh: 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
       --serif-en:'Cormorant Garamond', 'Georgia', serif;
-      --sans-en: 'Inter', -apple-system, sans-serif;
+      --sans-en: 'Inter', -apple-system, system-ui, sans-serif;
 
+      /* Motion */
       --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-      --dur:  0.5s;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --dur: 0.5s;
     }
 
-    /* ─── Tokens: Dark (墨夜) ─── */
-
+    /* Dark — 墨夜 */
     html[data-theme="dark"] {
-      --bg:        #12110e;
-      --bg-alt:    #1c1a16;
-      --fg:        #e4ddd0;
-      --fg-body:   #b5ad9f;
-      --fg-muted:  #736d62;
-      --fg-dim:    #443f38;
-      --accent:    #c4564e;
-      --accent-soft: rgba(196,86,78,0.1);
-      --rule:      #2e2a24;
+      --bg:          #100f0c;
+      --bg-elevated: #191714;
+      --bg-recessed: #0a0908;
+
+      --fg:          #ece5d8;
+      --fg-body:     #c4b9a8;
+      --fg-muted:    #8a8174;
+      --fg-dim:      #58514a;
+      --fg-ghost:    #2e2a24;
+
+      --gold:        #d4b87a;
+      --gold-soft:   rgba(212,184,122,0.08);
+      --gold-text:   #d4b87a;
+
+      --rule:        #2a2622;
+      --rule-light:  #1e1c18;
     }
 
-    /* ─── Base ─── */
+    /* ══════════ Base ══════════ */
 
     html {
       font-size: 16px;
@@ -69,16 +90,16 @@
     }
 
     ::selection {
-      background: var(--accent);
-      color: #f4efe6;
+      background: var(--gold);
+      color: #1a1814;
     }
 
-    /* ─── Shared ─── */
+    /* ══════════ Shared ══════════ */
 
     .container {
-      max-width: 800px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 48px;
+      padding: 0 clamp(28px, 6vw, 72px);
     }
 
     hr.rule {
@@ -88,65 +109,68 @@
       transition: background var(--dur) var(--ease);
     }
 
-    hr.rule--short { width: 48px; margin: 0 auto; }
-
     .section-label {
       font-family: var(--sans-en);
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-weight: 500;
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--fg-dim);
     }
 
-    /* ─── Theme Toggle ─── */
+    .section-label--gold { color: var(--gold-text); }
+
+    /* ══════════ Theme Toggle ══════════ */
 
     .theme-toggle {
       position: fixed;
-      top: 36px;
-      right: 36px;
+      top: 32px;
+      right: 32px;
       z-index: 100;
-      background: none;
+      background: var(--bg);
       border: 1px solid var(--rule);
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: border-color var(--dur), background var(--dur);
+      transition: border-color var(--dur), background var(--dur), transform 0.3s var(--ease);
     }
-
     .theme-toggle:hover {
-      border-color: var(--fg-muted);
-      background: var(--accent-soft);
+      border-color: var(--gold);
+      transform: scale(1.05);
     }
-
     .theme-toggle svg {
-      width: 14px;
-      height: 14px;
-      stroke: var(--fg-muted);
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 13px; height: 13px;
+      stroke: var(--fg-muted); fill: none;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
       transition: stroke var(--dur);
     }
-
     .theme-toggle .icon-moon { display: none; }
-    html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+    html[data-theme="dark"] .theme-toggle .icon-sun  { display: none; }
     html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 
-    /* ─── Hero: 竖排 + 横排的不对称构图 ─── */
+    /* ══════════ Hero ══════════
+       竖排大字 + 右侧留白叙述
+       Golden ratio: 竖排占 38.2%, 右侧占 61.8% */
 
     .hero {
       min-height: 100svh;
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: 1fr 1.618fr;
       align-items: center;
-      gap: 0;
-      padding: 0 48px;
+      padding: 0 clamp(28px, 6vw, 72px);
       position: relative;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-right: clamp(24px, 4vw, 56px);
+      border-right: 1px solid var(--rule);
+      align-self: center;
     }
 
     .hero-vertical {
@@ -154,222 +178,332 @@
       text-orientation: mixed;
       font-family: var(--song);
       font-weight: 200;
-      font-size: clamp(2.8rem, 8vw, 5rem);
-      line-height: 1.6;
-      letter-spacing: 0.15em;
+      font-size: clamp(3rem, 7.5vw, 5.2rem);
+      line-height: 1.7;
+      letter-spacing: 0.18em;
       color: var(--fg);
-      padding: 0 12px 0 0;
-      border-right: 1px solid var(--rule);
-      height: clamp(320px, 50vh, 480px);
+      height: clamp(340px, 52vh, 500px);
       display: flex;
       align-items: flex-start;
       opacity: 0;
-      animation: fadeIn 1s 0.3s var(--ease) both;
+      animation: fadeIn 1.2s 0.2s var(--ease) both;
     }
 
     .hero-vertical em {
       font-style: normal;
-      color: var(--accent);
+      color: var(--gold);
       font-weight: 300;
     }
 
-    .hero-right {
-      padding-left: clamp(32px, 5vw, 64px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero-eyebrow {
-      font-family: var(--sans-en);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--fg-dim);
-      margin-bottom: 40px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.5s var(--ease) both;
-    }
-
-    .hero-sub {
-      font-family: var(--wenkai);
-      font-size: clamp(0.95rem, 2.2vw, 1.1rem);
-      font-weight: 300;
-      color: var(--fg-muted);
-      line-height: 2.2;
-      letter-spacing: 0.06em;
-      max-width: 280px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.7s var(--ease) both;
-    }
-
-    /* 朱印 — 纯 CSS 几何印章 */
+    /* 朱印 — CSS 方印 */
     .hero-seal {
-      margin-top: 48px;
-      width: 40px;
-      height: 40px;
-      border: 1.5px solid var(--accent);
+      margin-top: 28px;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      animation: fadeIn 0.8s 1s var(--ease) both;
+      animation: fadeIn 0.8s 1.2s var(--ease) both;
+      transition: border-color var(--dur);
     }
-
     .hero-seal span {
       font-family: var(--song);
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.08em;
+      font-size: 0.6rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0;
       line-height: 1;
     }
 
-    .hero-rule-bottom {
-      position: absolute;
-      bottom: 0;
-      left: 48px;
-      right: 48px;
-      height: 1px;
-      background: var(--rule);
+    .hero-right {
+      padding-left: clamp(24px, 4vw, 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
     }
 
-    /* ─── Philosophy ─── */
-
-    .philosophy {
-      padding: 120px 48px;
-      text-align: center;
-    }
-
-    .philosophy-text {
-      font-family: var(--wenkai);
+    .hero-eyebrow {
+      font-family: var(--serif-en);
+      font-size: clamp(0.82rem, 1.2vw, 0.95rem);
       font-weight: 300;
-      font-size: clamp(1.1rem, 2.6vw, 1.35rem);
-      line-height: 2.6;
-      color: var(--fg-muted);
-      max-width: 420px;
-      margin: 0 auto;
-      letter-spacing: 0.08em;
+      font-style: italic;
+      letter-spacing: 0.12em;
+      color: var(--gold-text);
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s var(--ease) both;
     }
 
-    .philosophy-text strong {
+    .hero-tagline {
+      font-family: var(--wenkai);
+      font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+      font-weight: 300;
+      color: var(--fg-body);
+      line-height: 2.4;
+      letter-spacing: 0.08em;
+      max-width: 320px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s var(--ease) both;
+    }
+
+    .hero-tagline strong {
       font-weight: 400;
       color: var(--fg);
     }
 
-    /* ─── Features ─── */
+    .hero-note {
+      margin-top: 56px;
+      font-family: var(--serif-en);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      opacity: 0;
+      animation: fadeUp 0.6s 1s var(--ease) both;
+    }
+
+    .hero-line-bottom {
+      position: absolute;
+      bottom: 0; left: clamp(28px,6vw,72px); right: clamp(28px,6vw,72px);
+      height: 1px;
+      background: var(--rule);
+    }
+
+    /* ══════════ Manifesto — 宣言 ══════════
+       Staggered text blocks, editorial rhythm */
+
+    .manifesto {
+      padding: clamp(100px, 14vh, 160px) 0;
+    }
+
+    .manifesto-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .manifesto-left {
+      padding-right: clamp(24px, 4vw, 56px);
+      border-right: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 8px;
+    }
+
+    .manifesto-label {
+      font-family: var(--serif-en);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--fg-ghost);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .manifesto-right {
+      padding-left: clamp(24px, 4vw, 56px);
+    }
+
+    .manifesto-text {
+      font-family: var(--wenkai);
+      font-weight: 300;
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      line-height: 2.8;
+      color: var(--fg-muted);
+      letter-spacing: 0.06em;
+      max-width: 28em;
+    }
+
+    .manifesto-text strong {
+      font-weight: 400;
+      color: var(--fg);
+    }
+
+    .manifesto-text em {
+      font-style: normal;
+      color: var(--gold-text);
+    }
+
+    /* ══════════ Features ══════════
+       Three-column grid with vertical-text labels */
 
     .features {
-      padding: 100px 0 120px;
+      padding: clamp(80px, 10vh, 120px) 0;
     }
 
     .features-head {
+      margin-bottom: 64px;
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 0;
     }
 
-    .features-list {
-      display: flex;
-      flex-direction: column;
+    .features-head-line {
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+      margin-left: 20px;
     }
 
-    .feature-item {
+    .features-grid {
       display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 0 32px;
-      padding: 44px 0;
-      border-top: 1px solid var(--rule);
-      align-items: baseline;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
     }
 
-    .feature-item:last-child {
+    .feature-cell {
+      padding: clamp(32px, 5vh, 48px) clamp(20px, 3vw, 40px);
+      border-top: 1px solid var(--rule);
+      position: relative;
+    }
+
+    .feature-cell:nth-child(odd) {
+      border-right: 1px solid var(--rule);
+    }
+
+    .feature-cell:nth-child(n+3) {
+      /* already has border-top from the rule above */
+    }
+
+    .feature-cell:last-child,
+    .feature-cell:nth-last-child(2):nth-child(odd) {
+      border-bottom: 1px solid var(--rule);
+    }
+    /* Ensure all bottom cells get bottom border */
+    .feature-cell:nth-child(3),
+    .feature-cell:nth-child(4) {
       border-bottom: 1px solid var(--rule);
     }
 
     .feature-num {
       font-family: var(--serif-en);
-      font-size: 2rem;
-      font-weight: 300;
-      color: var(--fg-dim);
-      line-height: 1;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--gold-text);
+      margin-bottom: 20px;
+      display: block;
     }
 
     .feature-title {
-      font-family: var(--wenkai);
+      font-family: var(--song);
       font-weight: 400;
-      font-size: 1.15rem;
-      letter-spacing: 0.08em;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      letter-spacing: 0.12em;
       color: var(--fg);
-      margin-bottom: 12px;
-      line-height: 1.6;
+      margin-bottom: 16px;
+      line-height: 1.5;
     }
 
     .feature-desc {
       font-family: var(--wenkai);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 300;
       color: var(--fg-muted);
-      line-height: 2;
-      letter-spacing: 0.04em;
-      max-width: 540px;
+      line-height: 2.2;
+      letter-spacing: 0.03em;
     }
 
-    /* ─── Vertical Quote (竖排引文) ─── */
+    /* ══════════ Interlude — 竖排诗意引文 ══════════ */
 
-    .vert-quote {
-      padding: 100px 48px;
+    .interlude {
+      padding: clamp(80px, 12vh, 140px) 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 24px;
+      position: relative;
     }
 
-    .vert-quote-rule {
+    .interlude-content {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 3vw, 32px);
+    }
+
+    .interlude-rule {
       width: 1px;
-      height: 160px;
+      height: clamp(120px, 18vh, 200px);
       background: var(--rule);
       flex-shrink: 0;
     }
 
-    .vert-quote-text {
+    .interlude-text {
       writing-mode: vertical-rl;
       text-orientation: mixed;
       font-family: var(--song);
-      font-weight: 300;
-      font-size: clamp(1.2rem, 3vw, 1.6rem);
-      letter-spacing: 0.2em;
-      line-height: 2.4;
-      color: var(--fg-muted);
-      height: clamp(200px, 30vh, 320px);
+      font-weight: 200;
+      font-size: clamp(1.3rem, 3.2vw, 1.8rem);
+      letter-spacing: 0.25em;
+      line-height: 2.6;
+      color: var(--fg-dim);
+      height: clamp(220px, 30vh, 360px);
     }
 
-    .vert-quote-text em {
+    .interlude-text em {
       font-style: normal;
-      color: var(--accent);
+      color: var(--gold);
+      font-weight: 300;
     }
 
-    /* ─── Colophon ─── */
+    /* ══════════ Colophon — 版记 ══════════
+       Asymmetric: left label, right grid */
 
     .colophon {
-      padding: 100px 0;
+      padding: clamp(80px, 10vh, 120px) 0;
     }
 
-    .colophon-head {
-      margin-bottom: 56px;
+    .colophon-inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+    }
+
+    .colophon-left {
+      padding-right: 40px;
+      border-right: 1px solid var(--rule);
+      padding-top: 4px;
+    }
+
+    .colophon-left .section-label {
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .colophon-edition {
+      font-family: var(--serif-en);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--fg-ghost);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .colophon-edition-sub {
+      font-family: var(--wenkai);
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--fg-dim);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+    }
+
+    .colophon-right {
+      padding-left: 40px;
     }
 
     .colophon-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 44px 32px;
+      gap: 36px 28px;
     }
 
-    .colophon-label {
+    .colophon-item-label {
       font-family: var(--sans-en);
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       font-weight: 500;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -377,94 +511,110 @@
       margin-bottom: 8px;
     }
 
-    .colophon-value {
+    .colophon-item-value {
       font-family: var(--wenkai);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 400;
       color: var(--fg-body);
       letter-spacing: 0.04em;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    /* ─── CTA ─── */
+    /* ══════════ CTA ══════════ */
 
     .cta {
-      padding: 120px 48px;
+      padding: clamp(100px, 14vh, 160px) 0;
       text-align: center;
     }
 
     .cta-title {
       font-family: var(--song);
       font-weight: 200;
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      letter-spacing: 0.1em;
+      font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+      letter-spacing: 0.15em;
       color: var(--fg);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .cta-sub {
       font-family: var(--wenkai);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 300;
       color: var(--fg-muted);
       letter-spacing: 0.06em;
-      margin-bottom: 56px;
+      margin-bottom: 52px;
     }
 
     .cta-link {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-family: var(--sans-en);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 500;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--gold-text);
       text-decoration: none;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--accent);
-      transition: color var(--dur), border-color var(--dur);
+      padding: 14px 32px;
+      border: 1px solid var(--gold);
+      transition: all 0.4s var(--ease);
     }
 
     .cta-link:hover {
-      color: var(--fg);
-      border-color: var(--fg);
+      background: var(--gold-soft);
+      border-color: var(--gold-text);
     }
 
-    /* ─── Footer ─── */
+    .cta-link::after {
+      content: '\2192';
+      font-size: 0.85rem;
+      transition: transform 0.3s var(--ease);
+    }
+
+    .cta-link:hover::after {
+      transform: translateX(4px);
+    }
+
+    /* ══════════ Footer ══════════ */
 
     footer {
-      padding: 40px 0 52px;
+      padding: 36px 0 48px;
     }
 
     .footer-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
-      color: var(--fg-dim);
     }
 
     .footer-brand {
-      font-family: var(--sans-en);
-      letter-spacing: 0.06em;
+      font-family: var(--serif-en);
+      font-size: 0.72rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--fg-dim);
+      letter-spacing: 0.04em;
     }
 
     .footer-links {
       display: flex;
-      gap: 28px;
+      gap: 24px;
     }
 
     .footer-links a {
       font-family: var(--wenkai);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 300;
       color: var(--fg-dim);
       text-decoration: none;
-      transition: color 0.25s;
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
     }
 
     .footer-links a:hover { color: var(--fg-muted); }
 
-    /* ─── Animations ─── */
+    /* ══════════ Animations ══════════ */
 
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -472,98 +622,128 @@
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-in {
+    .reveal {
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
     }
 
-    .fade-in.visible {
+    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* ─── Responsive ─── */
+    /* Staggered children */
+    .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+    .reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.24s; }
+    .reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.32s; }
+    .reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.40s; }
 
-    @media (max-width: 680px) {
+    /* ══════════ Responsive ══════════ */
+
+    @media (max-width: 768px) {
       .hero {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-        padding: 100px 32px 60px;
         min-height: auto;
-        gap: 48px;
+        padding: 100px clamp(28px, 6vw, 48px) 64px;
+        gap: 44px;
+      }
+
+      .hero-left {
+        align-items: flex-start;
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 24px;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 20px;
       }
 
       .hero-vertical {
         writing-mode: horizontal-tb;
         text-orientation: initial;
-        border-right: none;
-        border-bottom: 1px solid var(--rule);
-        padding: 0 0 20px;
         height: auto;
-        font-size: clamp(2.2rem, 10vw, 3.2rem);
-        letter-spacing: 0.08em;
-        line-height: 1.4;
+        font-size: clamp(2.4rem, 11vw, 3.6rem);
+        letter-spacing: 0.1em;
+        line-height: 1.35;
       }
+
+      .hero-seal { margin-top: 0; }
 
       .hero-right { padding-left: 0; }
-      .hero-rule-bottom { left: 32px; right: 32px; }
-      .hero-seal { margin-top: 36px; }
+      .hero-note { margin-top: 40px; }
 
-      .philosophy { padding: 80px 32px; }
-
-      .container { padding: 0 32px; }
-
-      .features { padding: 72px 0 88px; }
-
-      .feature-item {
+      .manifesto-inner {
         grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 32px 0;
+        gap: 28px;
       }
 
-      .feature-num { font-size: 1.3rem; }
-
-      .vert-quote { padding: 72px 32px; }
-
-      .vert-quote-text {
-        height: clamp(180px, 28vh, 260px);
-        font-size: 1.15rem;
+      .manifesto-left {
+        border-right: none;
+        padding-right: 0;
+        padding-bottom: 0;
       }
+
+      .manifesto-right { padding-left: 0; }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-cell { border-right: none !important; }
+      .feature-cell:nth-child(n) {
+        border-bottom: none;
+        border-top: 1px solid var(--rule);
+      }
+      .feature-cell:last-child { border-bottom: 1px solid var(--rule); }
+
+      .colophon-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .colophon-left {
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 28px;
+      }
+
+      .colophon-right { padding-left: 0; }
 
       .colophon-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 32px 24px;
       }
-
-      .cta { padding: 80px 32px 100px; }
 
       .footer-inner {
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
         text-align: center;
       }
 
-      .theme-toggle { top: 28px; right: 28px; }
+      .theme-toggle { top: 24px; right: 24px; }
     }
 
-    @media (max-width: 420px) {
+    @media (max-width: 480px) {
       .colophon-grid { grid-template-columns: 1fr; gap: 28px; }
 
-      .vert-quote-text {
-        font-size: 1rem;
-        height: 180px;
+      .interlude-text {
+        font-size: 1.1rem;
+        height: 200px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Theme Toggle — 方形（包豪斯） -->
+  <!-- Theme Toggle -->
   <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
     <svg class="icon-sun" viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="5"/>
@@ -577,126 +757,137 @@
     </svg>
   </button>
 
-  <!-- Hero: 竖排标题 + 横排副文 -->
+  <!-- ════ Hero ════ -->
   <section class="hero">
-    <div class="hero-vertical">说出来<em>就对了</em></div>
-    <div class="hero-right">
-      <p class="hero-eyebrow">WiseToDo</p>
-      <p class="hero-sub">
-        语音驱动的智能任务管理<br>
-        说一句话，剩下的交给它
-      </p>
+    <div class="hero-left">
+      <div class="hero-vertical">说出来<em>就对了</em></div>
       <div class="hero-seal"><span>智</span></div>
     </div>
-    <div class="hero-rule-bottom"></div>
+    <div class="hero-right">
+      <p class="hero-eyebrow">WiseToDo</p>
+      <p class="hero-tagline">
+        语音驱动的智能任务管理<br>
+        <strong>说一句话</strong>，剩下的交给它
+      </p>
+      <p class="hero-note">Voice-first &middot; AI-native &middot; iOS 26</p>
+    </div>
+    <div class="hero-line-bottom"></div>
   </section>
 
-  <!-- Philosophy -->
-  <section class="philosophy fade-in">
-    <p class="philosophy-text">
-      不需要打字，不需要分类，<br>
-      不需要设提醒。<br>
-      <strong>你只管说，它全部理解。</strong><br>
-      创建、安排、追踪——<br>
-      一句话的事。
-    </p>
+  <!-- ════ Manifesto ════ -->
+  <section class="manifesto">
+    <div class="container">
+      <div class="manifesto-inner">
+        <div class="manifesto-left reveal">
+          <span class="manifesto-label">Why</span>
+        </div>
+        <div class="manifesto-right reveal">
+          <p class="manifesto-text">
+            不需要打字，不需要分类，<br>
+            不需要设提醒。<br><br>
+            <strong>你只管说，它全部理解。</strong><br><br>
+            创建、安排、追踪——<br>
+            <em>一句话的事。</em>
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- Features -->
-  <div class="container"><hr class="rule"></div>
+  <!-- ════ Features ════ -->
   <section class="features">
     <div class="container">
-      <div class="features-head fade-in">
-        <p class="section-label">Features</p>
+      <div class="features-head reveal">
+        <span class="section-label">Features</span>
+        <div class="features-head-line"></div>
       </div>
-      <div class="features-list">
-        <div class="feature-item fade-in">
+      <div class="features-grid reveal-stagger">
+        <div class="feature-cell reveal">
           <span class="feature-num">01</span>
-          <div>
-            <h3 class="feature-title">语音优先</h3>
-            <p class="feature-desc">按住说话，松手完成。自然语言输入，无需学习任何操作。支持连续对话，一口气安排多件事。</p>
-          </div>
+          <h3 class="feature-title">语音优先</h3>
+          <p class="feature-desc">按住说话，松手完成。自然语言输入，无需学习任何操作。支持连续对话，一口气安排多件事。</p>
         </div>
-        <div class="feature-item fade-in">
+        <div class="feature-cell reveal">
           <span class="feature-num">02</span>
-          <div>
-            <h3 class="feature-title">深度理解</h3>
-            <p class="feature-desc">不只是语音转文字。它理解你的意图——自动拆解任务、设定优先级、识别日程冲突、记住你的表达习惯。</p>
-          </div>
+          <h3 class="feature-title">深度理解</h3>
+          <p class="feature-desc">不只是语音转文字。它理解你的意图——自动拆解任务、设定优先级、识别日程冲突、记住你的习惯。</p>
         </div>
-        <div class="feature-item fade-in">
+        <div class="feature-cell reveal">
           <span class="feature-num">03</span>
-          <div>
-            <h3 class="feature-title">对话式助理</h3>
-            <p class="feature-desc">像和真人秘书对话。「帮我查查明天有什么安排」「把开会改到下午三点」——听得懂，做得到。</p>
-          </div>
+          <h3 class="feature-title">对话式助理</h3>
+          <p class="feature-desc">像和真人秘书对话。「帮我查查明天有什么安排」「把开会改到下午三点」——听得懂，做得到。</p>
         </div>
-        <div class="feature-item fade-in">
+        <div class="feature-cell reveal">
           <span class="feature-num">04</span>
-          <div>
-            <h3 class="feature-title">安静地聪明</h3>
-            <p class="feature-desc">不打扰、不过度提醒。智能排序让重要的事自然浮现，完成的事默默归档。首屏永远只有最该关注的五件事。</p>
-          </div>
+          <h3 class="feature-title">安静地聪明</h3>
+          <p class="feature-desc">不打扰、不过度提醒。智能排序让重要的事自然浮现，完成的事默默归档。首屏只留最该关注的五件事。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Vertical Quote — 竖排引文 -->
-  <section class="vert-quote fade-in">
-    <div class="vert-quote-rule"></div>
-    <p class="vert-quote-text">一言既出<em>万事</em>皆安</p>
-    <div class="vert-quote-rule"></div>
+  <!-- ════ Interlude — 竖排引文 ════ -->
+  <section class="interlude reveal">
+    <div class="interlude-content">
+      <div class="interlude-rule"></div>
+      <p class="interlude-text">一言既出<em>万事</em>皆安</p>
+      <div class="interlude-rule"></div>
+    </div>
   </section>
 
-  <!-- Colophon -->
-  <div class="container"><hr class="rule"></div>
+  <!-- ════ Colophon — 版记 ════ -->
   <section class="colophon">
     <div class="container">
-      <div class="colophon-head fade-in">
-        <p class="section-label">Colophon</p>
-      </div>
-      <div class="colophon-grid fade-in">
-        <div>
-          <p class="colophon-label">Platform</p>
-          <p class="colophon-value">iOS 26</p>
+      <hr class="rule" style="margin-bottom: clamp(48px, 7vh, 80px);">
+      <div class="colophon-inner reveal">
+        <div class="colophon-left">
+          <span class="section-label">Colophon</span>
+          <p class="colophon-edition">v1.0</p>
+          <p class="colophon-edition-sub">公测版</p>
         </div>
-        <div>
-          <p class="colophon-label">Sync</p>
-          <p class="colophon-value">iCloud</p>
-        </div>
-        <div>
-          <p class="colophon-label">Voice</p>
-          <p class="colophon-value">实时流式识别</p>
-        </div>
-        <div>
-          <p class="colophon-label">Model</p>
-          <p class="colophon-value">端到端语音大模型</p>
-        </div>
-        <div>
-          <p class="colophon-label">Calendar</p>
-          <p class="colophon-value">Apple 日历同步</p>
-        </div>
-        <div>
-          <p class="colophon-label">Design</p>
-          <p class="colophon-value">Liquid Glass</p>
+        <div class="colophon-right">
+          <div class="colophon-grid reveal-stagger">
+            <div class="reveal">
+              <p class="colophon-item-label">Platform</p>
+              <p class="colophon-item-value">iOS 26</p>
+            </div>
+            <div class="reveal">
+              <p class="colophon-item-label">Sync</p>
+              <p class="colophon-item-value">iCloud</p>
+            </div>
+            <div class="reveal">
+              <p class="colophon-item-label">Voice</p>
+              <p class="colophon-item-value">实时流式识别</p>
+            </div>
+            <div class="reveal">
+              <p class="colophon-item-label">Model</p>
+              <p class="colophon-item-value">端到端语音大模型</p>
+            </div>
+            <div class="reveal">
+              <p class="colophon-item-label">Calendar</p>
+              <p class="colophon-item-value">Apple 日历同步</p>
+            </div>
+            <div class="reveal">
+              <p class="colophon-item-label">Design</p>
+              <p class="colophon-item-value">Liquid Glass</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <div class="container"><hr class="rule"></div>
-  <section class="cta fade-in">
+  <!-- ════ CTA ════ -->
+  <section class="cta reveal">
     <h2 class="cta-title">开始体验</h2>
     <p class="cta-sub">TestFlight 公测中</p>
     <a href="https://testflight.apple.com/join/YOUR_CODE" class="cta-link">Join TestFlight</a>
   </section>
 
-  <!-- Footer -->
-  <div class="container"><hr class="rule"></div>
+  <!-- ════ Footer ════ -->
   <footer>
     <div class="container">
+      <hr class="rule" style="margin-bottom: 36px;">
       <div class="footer-inner">
         <span class="footer-brand">&copy; 2026 WiseToDo</span>
         <div class="footer-links">
@@ -714,7 +905,7 @@
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       document.querySelector('meta[name="theme-color"]')
-        .setAttribute('content', next === 'dark' ? '#12110e' : '#f4efe6');
+        .setAttribute('content', next === 'dark' ? '#100f0c' : '#f5f0e6');
     }
 
     (function initTheme() {
@@ -723,16 +914,19 @@
       const theme = saved || prefer;
       document.documentElement.setAttribute('data-theme', theme);
       document.querySelector('meta[name="theme-color"]')
-        .setAttribute('content', theme === 'dark' ? '#12110e' : '#f4efe6');
+        .setAttribute('content', theme === 'dark' ? '#100f0c' : '#f5f0e6');
     })();
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
       }),
-      { threshold: 0.1 }
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
-    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
   </script>
 
 </body>
